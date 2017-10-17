@@ -3,6 +3,7 @@ import subprocess
 import os
 import time
 from datetime import datetime
+import re
 
 class Crontab:
 
@@ -84,8 +85,41 @@ class Crontab:
         retcode, err, out = self._runcmd('crontab', new_crontab)
         if retcode != 0: 
             raise ValueError('failed to install crontab, check if crontab is valid')
+    
+class ReadCrontab:
+    def __init__(self, task):
+        self.task = task
+    def get_space_position(self, times):
+        position = 0
+        count = 0
+        for i in self.task:
+            if i == ' ':
+                count += 1
+                if count == times:
+                    return position
+            position +=1
+        return -1
+
+    def get_ss(self):
+        return self.task[self.get_space_position(6): self.task.find('; ')]
+    def get_mm(self):
+        return self.task[0 : self.get_space_position(1)]
+    def get_hh(self):
+        return self.task[self.get_space_position(1) : self.get_space_position(2)]
+    def get_dd(self):
+        return self.task[self.get_space_position(2) : self.get_space_position(3)]
+    def get_MM(self):
+        return self.task[self.get_space_position(3) : self.get_space_position(4)]
+    def get_day_of_week(self):
+        return self.task[self.get_space_position(4) : self.get_space_position(5)]
+    def get_job_id(self):
+        return self.task[self.task.find('-j ')+3 : self.task.find('-s ')-1]
+    def get_action(self):
+        return self.task[self.task.find('-s ')+3 : len(self.task)]
 
 #Crontab().append(content='11 11 * * * /bin/sh /home/thomson_crontab/add_aa.sh', override=False)
 #Crontab().pop(content='35 15 * * * /bin/sh /home/thomson_crontab/add_aa.sh')
-Crontab().append(Crontab().create(1508144477, '111111', 'start'))
-print Crontab().get_list()
+#Crontab().append(Crontab().create(1508144477, '111111', 'start'))
+#print Crontab().get_list()
+
+print ReadCrontab('1 16 16 10 1 sleep 17; /bin/python /home/thomson_crontab/start_job/thomson_job.py -j 111111 -s start').get_action()
