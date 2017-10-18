@@ -116,10 +116,24 @@ class ReadCrontab:
         return self.task[self.task.find('-j ')+3 : self.task.find('-s ')-1]
     def get_action(self):
         return self.task[self.task.find('-s ')+3 : len(self.task)]
-
+    def get_all(self):
+        number_pattern=re.compile("\d{1,2}")
+        list_time=re.findall(number_pattern, self.task)
+        print list_time
+        ss = list_time[5]
+        mm = list_time[0]
+        hh = list_time[1]
+        dd = list_time[2]
+        MM = list_time[3]
+        dayofweek = list_time[4]
+        jid_pattern = re.compile("\d{4,10}")
+        list_jid = re.findall(jid_pattern, self.task)
+        jid = list_jid[0]
+        a_pattern = re.compile("(?:-[Ss] [Ss]tart|-[Ss] [Ss]top)")
+        print re.findall(a_pattern, self.task)
+        return ss,mm,hh,dd,MM,dayofweek,jid
 #Crontab().append(content='11 11 * * * /bin/sh /home/thomson_crontab/add_aa.sh', override=False)
 #Crontab().pop(content='35 15 * * * /bin/sh /home/thomson_crontab/add_aa.sh')
 #Crontab().append(Crontab().create(1508144477, '111111', 'start'))
 #print Crontab().get_list()
-
-print ReadCrontab('1 16 16 10 1 sleep 17; /bin/python /home/thomson_crontab/start_job/thomson_job.py -j 111111 -s start').get_action()
+print ReadCrontab('1 16 16 10 1 sleep 17; /bin/python /home/thomson_crontab/start_job/thomson_job.py -j 111111 -S Stop').get_all()

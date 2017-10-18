@@ -64,14 +64,14 @@ class JobDetail:
                 <job:JobStartReq Cmd="Start" OpV="01.00.00" JId="%s"/>
               </soapenv:Body>
             </soapenv:Envelope>"""%(self.jid)
-        #response_xml = Thomson().get_response(headers, body)
-        response_xml = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-	<soapenv:Body>
-		<jStart:JobStartRsp xmlns:mg="MalteseGlobal" xmlns:jStart="JobStart" OpV="01.00.00">
-			<mg:RspDone />
-		</jStart:JobStartRsp>
-	</soapenv:Body>
-</soapenv:Envelope>"""
+        response_xml = Thomson().get_response(headers, body)
+        #response_xml = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+	#<soapenv:Body>
+	#	<jStart:JobStartRsp xmlns:mg="MalteseGlobal" xmlns:jStart="JobStart" OpV="01.00.00">
+	#		<mg:RspDone />
+	#	</jStart:JobStartRsp>
+	#</soapenv:Body>
+        #</soapenv:Envelope>"""
         print response_xml
         return self.parse_status(response_xml)
 
