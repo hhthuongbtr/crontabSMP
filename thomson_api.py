@@ -15,9 +15,9 @@ from config import *
 
 class Thomson:
     def __init__(self):
-        self.user = USER
-        self.passwd = PASSWD
-        self.url = URL
+        self.user = THOMSON_USER
+        self.passwd = THOMSON_PASSWORD
+        self.url = THOMSON_URL
 
     def get_response(self, headers, body):
         response = requests.post(self.url, data=body, headers=headers, \
@@ -65,14 +65,7 @@ class JobDetail:
                 <job:JobStartReq Cmd="Start" OpV="01.00.00" JId="%s"/>
               </soapenv:Body>
             </soapenv:Envelope>"""%(self.jid)
-        #response_xml = Thomson().get_response(headers, body)
-        response_xml = """<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
-        <soapenv:Body>
-               <jStart:JobStartRsp xmlns:mg="MalteseGlobal" xmlns:jStart="JobStart" OpV="01.00.00">
-                       <mg:RspDone />
-               </jStart:JobStartRsp>
-        </soapenv:Body>
-        </soapenv:Envelope>"""
+        response_xml = Thomson().get_response(headers, body)
         #print response_xml
         return self.parse_status(response_xml)
 
@@ -90,7 +83,7 @@ class JobDetail:
               </soapenv:Body>
             </soapenv:Envelope>"""%(self.jid)
         response_xml = Thomson().get_response(headers, body)
-        print response_xml
+        #print response_xml
         return self.parse_status(response_xml)
 
     def send_action(self, action):

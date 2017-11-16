@@ -29,11 +29,11 @@ for option in ('jobid', 'state'):
 
 class Database:
     def __init__(self):
-        self.db = NAME
-        self.user = USER
-        self.password = PASSWORD
-        self.host = HOST
-        self.port = PORT
+        self.db = DATABASE_NAME
+        self.user = DATABASE_USER
+        self.password = DATABASE_PASSWORD
+        self.host = DATABASE_HOST
+        self.port = DATABASE_PORT
 
     def connect(self):
         return mdb.connect(host=self.host, port=self.port, user=self.user, passwd=self.password, db=self.db)
@@ -61,7 +61,7 @@ def write_log(jobid, state, status):
     now_pattern = re.compile("\d+") 
     now = re.findall(now_pattern, str(now))
     now = now[0]
-    host = THOMSON
+    host = THOMSON_HOST
     schedule_id = int(options.schedule_id) if options.schedule_id else None
     '''create query here'''
     if schedule_id:
